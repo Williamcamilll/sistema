@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <script>
+    if (localStorage.getItem("logado") !== "true") {
+      window.location.href = "login.html";
+    }
+  </script>
+  <script src="../assets/exportExcel.js" defer></script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel ADM | Unimar Saúde</title>
+
+  <!-- SEO -->
+  <meta name="description" content="Painel administrativo para gestão de plantões e profissionais da Unimar Saúde.">
+  <meta name="theme-color" content="#ffffff">
+
+  <!-- Google Fonts (Roboto) -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- FullCalendar CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.3/main.min.css">
+
+  <!-- Estilos Personalizados -->
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <header class="sidebar-header">
+      <h2><i class="fa-solid fa-hospital"></i> UNIMAR SAÚDE</h2>
+    </header>
+    <nav>
+      <ul class="nav-list">
+        <li><a href="index.html" class="active"><i class="fa-solid fa-gauge"></i> Início</a></li>
+        <li><a href="cadastro_profissional.html"><i class="fa-solid fa-user-doctor"></i> Profissionais</a></li>
+        <li><a href="cadastro_plantao.html"><i class="fa-solid fa-calendar-days"></i> Plantões</a></li>
+        <li><a href="troca_plantao.html"><i class="fa-solid fa-right-left"></i> Trocas</a></li>
+        
+    <li><button onclick="document.body.classList.toggle('darkmode')"><i class="fa-solid fa-moon"></i> Modo Escuro</button></li>
+    <li><button onclick="logoutUsuario()"><i class="fa-solid fa-right-from-bracket"></i> Sair</button></li>
+    
+      </ul>
+    </nav>
+  </aside>
+
+  <!-- Conteúdo Principal -->
+  <main class="main-content">
+    <header class="main-header">
+      <h2><i class="fa-solid fa-stethoscope"></i> Painel ADM</h2>
+      <p>Sistema eficiente para gerenciamento completo dos plantões médicos.</p>
+    </header>
+
+    <!-- Cards de Estatísticas -->
+    <section class="dashboard">
+      <div class="card">
+        <h3><i class="fa-solid fa-calendar-check"></i> Plantões Totais</h3>
+        <p id="totalPlantoes">0</p>
+      </div>
+      <div class="card">
+        <h3><i class="fa-solid fa-users-medical"></i> Profissionais Ativos</h3>
+        <p id="totalProfissionais">0</p>
+      </div>
+      <div class="card">
+        <h3><i class="fa-solid fa-clock-rotate-left"></i> Trocas Pendentes</h3>
+        <p id="trocasPendentes">0</p>
+      </div>
+      <div class="card">
+        <h3><i class="fa-solid fa-user-xmark"></i> Faltas Registradas</h3>
+        <p id="totalFaltas">0</p>
+      </div>
+    </section>
+
+    <!-- Notificação dinâmica -->
+    <div id="notificacao" class="notification" style="display:none"></div>
+
+    <!-- Tabela de Plantões -->
+
+    <!-- Filtros e Busca -->
+    <div class="filtros">
+      <input type="text" id="filtroBusca" placeholder="Buscar por nome...">
+      <input type="date" id="filtroDataInicio">
+      <input type="date" id="filtroDataFim">
+    </div>
+
+    <section>
+      <h2><i class="fa-solid fa-list-check"></i> Plantões Registrados</h2>
+      <div class="table-responsive">
+        <table id="tabelaPlantoes">
+          <thead>
+            <tr>
+              <th>Data</th>
+              <th>Horário</th>
+              <th>Profissional</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="listaPlantoes"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Gráfico -->
+    <section>
+      <h2><i class="fa-solid fa-chart-pie"></i> Distribuição dos Plantões</h2>
+      <div class="chart-container">
+        <canvas id="grafico"></canvas>
+      </div>
+    </section>
+
+    <!-- Calendário -->
+    <section>
+      <h2><i class="fa-solid fa-calendar-days"></i> Calendário de Plantões</h2>
+      <div id="calendario"></div>
+    </section>
+
+    <!-- Botões de ação -->
+    <section class="actions">
+      <button id="exportarPDF"><i class="fa-solid fa-file-pdf"></i> Exportar PDF</button>
+       <button id="exportarExcel"><i class="fa-solid fa-file-excel"></i> Exportar Excel</button>
+      <button id="backupDados"><i class="fa-solid fa-cloud-arrow-down"></i> Backup</button>
+      <label for="inputRestore" class="button-restore"></label>
+        <input type="file" id="inputRestore" accept=".json" style="display:none">
+      </label>
+    </section>
+  </main>
+
+  <!-- JavaScript Externos -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="../assets/exportExcel.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.3/main.min.js"></script>
+  <script src="../assets/exportExcel.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="../assets/exportExcel.js" defer></script>
+
+  <!-- Scripts Customizados -->
+  <script src="assets/script.js" defer></script>
+  <script src="../assets/exportExcel.js" defer></script>
+  <script defer>
+    const mostrarNotificacao = (msg, tipo = 'success') => {
+      const n = document.getElementById('notificacao');
+      if (!n) return;
+      n.innerText = msg;
+      n.className = `notification ${tipo}`;
+      n.style.display = 'block';
+      setTimeout(() => n.style.opacity = '0', 3000);
+      setTimeout(() => {
+        n.style.display = 'none';
+        n.style.opacity = '1';
+      }, 3500);
+    };
+
+    document.getElementById('exportarPDF')?.addEventListener('click', () => {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+
+      let y = 20;
+      doc.setFontSize(16);
+      doc.text("Relatório de Plantões", 20, y);
+      y += 10;
+
+      const plantoes = JSON.parse(localStorage.getItem("plantoes")) || [];
+      plantoes.forEach(p => {
+        doc.text(`Data: ${p.data}  |  Hora: ${p.hora}  |  Profissional: ${p.profissional}`, 20, y);
+        y += 8;
+      });
+
+      doc.save("relatorio_plantoes.pdf");
+      mostrarNotificacao("PDF gerado com sucesso!");
+    });
+
+    document.getElementById('backupDados')?.addEventListener('click', () => {
+      const dados = {
+        profissionais: localStorage.getItem("profissionais"),
+        plantoes: localStorage.getItem("plantoes"),
+        trocas: localStorage.getItem("trocas")
+      };
+
+      const blob = new Blob([JSON.stringify(dados)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "backup_unimar.json";
+      link.click();
+      mostrarNotificacao("Backup realizado com sucesso!");
+    });
+
+    document.getElementById('inputRestore')?.addEventListener('change', function () {
+      const file = this.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function (event) {
+        try {
+          const dados = JSON.parse(event.target.result);
+          if (dados.profissionais) localStorage.setItem("profissionais", dados.profissionais);
+          if (dados.plantoes) localStorage.setItem("plantoes", dados.plantoes);
+          if (dados.trocas) localStorage.setItem("trocas", dados.trocas);
+          mostrarNotificacao("Dados restaurados com sucesso!");
+          setTimeout(() => location.reload(), 1000);
+        } catch (e) {
+          mostrarNotificacao("Erro ao restaurar o backup.", "error");
+        }
+      };
+      reader.readAsText(file);
+    });
+  </script>
+  <script src="../assets/exportExcel.js" defer></script>
+</body>
+
+
+  <script>
+    function logoutUsuario() {
+      localStorage.removeItem("logado");
+      window.location.href = "login.html";
+    }
+  </script>
+  <script src="../assets/exportExcel.js" defer></script>
+  <script src="assets/calendar.js"></script>
+</html>
+

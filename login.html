@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | Unimar Saúde</title>
+
+  <!-- Estilos -->
+  <link rel="stylesheet" href="assets/login.css">
+
+  <!-- Ícones -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Melhorar SEO -->
+  <meta name="description" content="Área de login administrativo da Unimar Saúde. Acesse com seu usuário e senha.">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;700&display=swap" rel="stylesheet">
+<!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+</head>
+<body class="login-page">
+
+  <main class="login-container" role="main">
+    <h1 class="login-title">
+      <i class="fa-solid fa-user-shield"></i> Acesso Administrativo
+    </h1>
+
+    <form id="formLogin" aria-label="Formulário de login">
+      <label for="usuario" class="sr-only">Usuário</label>
+      <input type="text" id="usuario" name="usuario" placeholder="Usuário" required autocomplete="username">
+
+      <label for="senha" class="sr-only">Senha</label>
+      <input type="password" id="senha" name="senha" placeholder="Senha" required autocomplete="current-password">
+
+      <button type="submit" class="login-button">
+        <i class="fa-solid fa-arrow-right-to-bracket"></i> Entrar
+      </button>
+    </form>
+
+    <p id="loginMsg" class="login-msg" aria-live="polite"></p>
+  </main>
+
+  <script src="assets/login.js"></script>
+  <script src="assets/script.js"></script>
+  <script src="/assets/calendar.js"></script>
+</body>
+</html>

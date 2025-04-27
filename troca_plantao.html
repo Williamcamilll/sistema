@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Troca de Plantão | Unimar Saúde</title>
+
+    <!-- SEO -->
+    <meta name="description" content="Gerencie solicitações de troca de plantões médicos no sistema Unimar Saúde.">
+
+    <!-- Google Fonts (Roboto) -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- CSS Principal -->
+    <link rel="stylesheet" href="assets/style.css">
+</head>
+
+<body>
+    <!-- MENU LATERAL -->
+    <aside class="sidebar">
+        <header class="sidebar-header">
+            <h2><i class="fa-solid fa-hospital"></i> UNIMAR SAÚDE</h2>
+        </header>
+        <nav>
+            <ul class="nav-list">
+                <li><a href="index.html"><i class="fa-solid fa-gauge"></i> Inicio</a></li>
+                <li><a href="cadastro_profissional.html"><i class="fa-solid fa-user-doctor"></i> Profissionais</a></li>
+                <li><a href="cadastro_plantao.html"><i class="fa-solid fa-calendar-days"></i> Plantões</a></li>
+                <li><a href="troca_plantao.html" class="active"><i class="fa-solid fa-right-left"></i> Trocas</a></li>
+                <li><button onclick="document.body.classList.toggle('darkmode')"><i class="fa-solid fa-moon"></i> Modo Escuro</button></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="main-content">
+        <header class="main-header">
+            <h1><i class="fa-solid fa-arrows-rotate"></i> Solicitação de Troca</h1>
+            <p>Realize e gerencie solicitações de trocas de plantões facilmente.</p>
+        </header>
+
+        <!-- FORMULÁRIO -->
+        <section class="form-container">
+            <form id="formTrocaPlantao">
+                <div class="form-group">
+                    <label for="profissionalTroca"><i class="fa-solid fa-user"></i> Profissional:</label>
+                    <input type="text" id="profissionalTroca" placeholder="Nome completo" required>
+                </div>
+                <div class="form-group">
+                    <label for="dataAtual"><i class="fa-solid fa-calendar-minus"></i> Data Atual:</label>
+                    <input type="date" id="dataAtual" required>
+                </div>
+                <div class="form-group">
+                    <label for="dataNova"><i class="fa-solid fa-calendar-plus"></i> Nova Data:</label>
+                    <input type="date" id="dataNova" required>
+                </div>
+                <button type="submit"><i class="fa-solid fa-arrow-right-arrow-left"></i> Solicitar Troca</button>
+            </form>
+        </section>
+
+        <!-- TABELA DE SOLICITAÇÕES -->
+        <section>
+            <h2><i class="fa-solid fa-list-check"></i> Solicitações Pendentes</h2>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Profissional</th>
+                            <th>Data Atual</th>
+                            <th>Nova Data</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="listaTrocas">
+                        <!-- Inserção dinâmica via JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <!-- JavaScript Principal -->
+    <script src="assets/script.js"></script>
+</body>
+</html>
